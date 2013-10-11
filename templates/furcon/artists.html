@@ -3,18 +3,13 @@
 <head>
     <title></title>
 </head>
-<body>
-{% for a in artists %}
-    {% if forloop.first or forloop.counter0|divisibleby:column_length %}
+<body>{% for a in artists %}{% if forloop.first or forloop.counter0|divisibleby:column_length %}
     <div style="float: left; width: 33%;">
-        <ul>
-    {% endif %}
+        <ul>{% endif %}
             <li{% if a.artistname|length > 25 %} style="font-size: small;"{% endif %}>{% if a.website %}
-                    <a href="{{ a.website }}">{% endif %}{{ a.artistname }}{% if a.website %}</a>{% endif %}</li>
-    {% if forloop.last or forloop.counter|divisibleby:column_length %}
+                    <a href="{{ a.website }}">{% endif %}{{ a.artistname }}{% if a.website %}</a>
+            {% endif %}</li>{% if forloop.last or forloop.counter|divisibleby:column_length %}
         </ul>
-    </div>
-    {% endif %}
-{% endfor %}
+    </div>{% endif %}{% endfor %}
 </body>
 </html>

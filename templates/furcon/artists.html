@@ -8,7 +8,7 @@
         <ul>{% endif %}
             <li{% if a.artistname|length > 32 %} style="font-size: smaller;"{% elif a.artistname|length > 25 %} style="font-size: small;"{% endif %}>{% if a.website %}
                     <a href="{{ a.website }}">{% endif %}{{ a.artistname }}{% if a.website %}</a>
-            {% endif %}</li>{% if forloop.last or forloop.counter|divisibleby:column_length %}
+            {% endif %}{% if mark_waiting and not a.is_showing %}<span class="waiting">*</span>{% endif %}</li>{% if forloop.last or forloop.counter|divisibleby:column_length %}
         </ul>
     </div>{% endif %}{% endfor %}
 </body>

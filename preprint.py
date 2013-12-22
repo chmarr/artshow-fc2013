@@ -168,7 +168,7 @@ class group_pieces_by_artist_and_n ( object ):
     def __iter__ ( self ):
         return self
     def next ( self ):
-        if self.current_piece == None:
+        if self.current_piece is None:
             self.current_piece = next(self.pieces) # Exit on Stop Iteration
         return ( self.current_piece.artist, self._grouper() )
     def _grouper ( self ):

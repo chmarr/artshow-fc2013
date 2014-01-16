@@ -245,3 +245,29 @@ def piece_stickers ( pieces, output ):
         pass
             
     c.save ()
+
+
+def bidder_agreement(bidder, output):
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+
+    pdfmetrics.registerFont(TTFont(*settings.ARTSHOW_BARCODE_FONT))
+
+    c = Canvas(output, pagesize=letter)
+    pdf = PdfReader(settings.ARTSHOW_BLANK_BIDDER_AGREEMENT)
+    xobj = pagexobj(pdf.pages[0])
+    rlobj = makerl(c, xobj)
+
+    c.translate(0, 5.5 * inch)
+
+    c.doForm(rlobj)
+    text_into_box(c, u"*P" + unicode(bidder.person.id) + u"*", 3.5, 4.8, 5.5, 5.05, fontSize=14, style=barcode_style)
+    text_into_box(c, "Ref. " + unicode(bidder.person.id), 3.5, 4.55, 5.5, 4.75, fontSize=10)
+
+    text_into_box(c, bidder.person.reg_id, 6.2, 1.35, 7.7, 1.6, fontSize=12)
+
+    text_into_box(c, bidder.person.name, 1.3, 1.4, 5.2, 1.7, fontSize=14)
+    text_into_box(c, bidder.at_con_contact, 2.1, 0.5, 5.2, 0.8, fontSize=12)
+
+    c.showPage()
+    c.save()

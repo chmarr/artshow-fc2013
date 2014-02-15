@@ -102,8 +102,8 @@ class Command(BaseCommand):
                 rl_first, rl_last, phone, address_1_line_1, address_1_line_2, address_1_city,\
                     address_1_state, address_1_zip, email_1 = entries[0]
                 self.write_error("Updating %s. Reg DB name: %s %s", p, rl_first, rl_last)
-                p.address_1 = address_1_line_1
-                p.address_2 = address_1_line_2
+                p.address1 = address_1_line_1
+                p.address2 = address_1_line_2
                 p.city = address_1_city
                 p.state = address_1_state
                 p.postcode = address_1_zip

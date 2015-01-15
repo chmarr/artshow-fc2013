@@ -201,7 +201,7 @@ def control_forms ( pieces, output ):
         text_into_box ( c, artist.person.country, 1.7, 7.625,  4.1,  7.975, style=left_align_style )
         text_into_box ( c, artist.person.phone, 1.7, 7.25,   4.1,  7.6, style=left_align_style   )
         text_into_box ( c, artist.person.email, 4.9, 9.875, 8.0, 10.225, style=left_align_style, fontSize=16 )      
-        text_into_box ( c, ", ".join ( [agent.name for agent in artist.agent_set.all()] ), 5.9, 7.625, 8.0, 7.975, style=left_align_style )
+        text_into_box ( c, ", ".join ( [agent.person.name for agent in artist.agent_set.all()] ), 5.9, 7.625, 8.0, 7.975, style=left_align_style )
         for i, piece in enumerate(piecegroup):
             if piece is None: continue
             y0 = 6.45 - i*0.25

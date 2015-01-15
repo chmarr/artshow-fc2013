@@ -9,7 +9,10 @@ PIECES_PER_CONTROL_FORM = 20
 
 
 def auto_compress(s, std_width):
-    s = str(s)
+    if type(s) == unicode:
+        s = s.encode('ascii', 'replace')
+    else:
+        s = str(s)
 
     if len(s) <= std_width - 2:
         return " %-*s " % ( std_width - 2, s )

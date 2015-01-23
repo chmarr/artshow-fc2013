@@ -125,14 +125,21 @@ class Command(BaseCommand):
         """)
             for r in c:
                 cur.execute("""\
-        INSERT INTO reg VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
-                    r['UID'], r['rl_first'], r['rl_last'], r['fan_name'], r['FC2014_reg_num'], r['PH 1'],
-                    r['PH 1 Name'], r['Address 1 ID'], r['Address 1 Ship to Name'], r['Address 1 Line 1'],
-                    r['Address 1 Line 2'], r['Address 1 City'], r['Address 1 State'], r['Address 1 Zip'],
-                    r['Address 1 Updated'], r['EMail 1'], r['Spam_Ok 1'],
-                    r["UID"] + "-" + r["FC2014_reg_num"],
-                    r["UID"] + r["FC2014_reg_num"],
-                ))
+INSERT INTO reg ( joined_reg_id, rl_first, rl_last, email_1, address_1_line_1, address_1_line_2,
+        address_1_city, address_1_state, address_1_zip )
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                            (r['RegID'], r['First'], r['Last'], r['Email'], r['Address'], r['Address2'],
+                            r['City'], r['State'], r['Zip']))
+        #         cur.execute("""\
+        # INSERT INTO reg VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
+        #             r['UID'], r['rl_first'], r['rl_last'], r['fan_name'], r['FC2014_reg_num'], r['PH 1'],
+        #             r['PH 1 Name'], r['Address 1 ID'], r['Address 1 Ship to Name'], r['Address 1 Line 1'],
+        #             r['Address 1 Line 2'], r['Address 1 City'], r['Address 1 State'], r['Address 1 Zip'],
+        #             r['Address 1 Updated'], r['EMail 1'], r['Spam_Ok 1'],
+        #             r["UID"] + "-" + r["FC2014_reg_num"],
+        #             r["UID"] + r["FC2014_reg_num"],
+        #         ))
+
         self.db = db
 
 

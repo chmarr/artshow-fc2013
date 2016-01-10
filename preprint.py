@@ -12,6 +12,7 @@ from pdfrw.buildxobj import pagexobj
 from pdfrw.toreportlab import makerl
 from cgi import escape
 from logging import getLogger
+from artshow.conf import settings as artshow_settings
 
 logger = getLogger(__name__)
 
@@ -47,6 +48,21 @@ def text_into_box ( canvas, msg, x0, y0, x1, y1, fontName="Helvetica", fontSize=
     draw_msg_into_frame ( frame, canvas, msg, fontSize, minFontSize, style=style, escape_text=escape_text )
     
 
+def precollate_pieces(pieces):
+    all_pieces = list(pieces)
+    count = len(all_pieces)
+    full_pages, remainder = divmod(count, 4)
+    if remainder > 0:
+        full_pages += 1
+    for page in range(full_pages):
+        for quarter in range(4):
+            index = page + quarter*full_pages
+            if index >= count:
+                yield None
+            else:
+                yield all_pieces[index]
+
+
 def bid_sheets ( pieces, output ):
 
     from reportlab.pdfbase import pdfmetrics
@@ -73,6 +89,8 @@ def bid_sheets ( pieces, output ):
     sheets_per_page = len(sheet_offsets)
     sheet_num = 0
     pieceiter = iter(pieces)
+    if artshow_settings.ARTSHOW_BID_SHEET_PRECOLLATION:
+        pieceiter = precollate_pieces(pieceiter)
     last_artist = None
     
     try:
@@ -80,8 +98,13 @@ def bid_sheets ( pieces, output ):
         while True:
             try:
                 for sheet_num in range(sheets_per_page):
-                    if piece.artist != last_artist and sheet_num != 0:
-                        continue
+                    if artshow_settings.ARTSHOW_BID_SHEET_PRECOLLATION:
+                        if piece is None:
+                            piece = pieceiter.next()
+                            continue
+                    else:
+                        if piece.artist != last_artist and sheet_num != 0:
+                            continue
                     c.saveState ()
                     c.translate ( sheet_offsets[sheet_num][0]*inch, sheet_offsets[sheet_num][1]*inch )
                     if piece.not_for_sale:

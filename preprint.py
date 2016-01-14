@@ -244,7 +244,7 @@ def piece_stickers ( pieces, output ):
     x_range = range(3)
     y_range = range(10)
     pieceiter = iter(pieces)
-    
+
     last_artist = None
 
     try:
@@ -266,7 +266,7 @@ def piece_stickers ( pieces, output ):
                 c.showPage ()
     except StopIteration:
         pass
-            
+
     c.save ()
 
 
@@ -294,3 +294,34 @@ def bidder_agreement(bidder, output):
 
     c.showPage()
     c.save()
+
+
+def artist_quickref_stickers(artists, output):
+
+    c = Canvas ( output, pagesize=letter )
+    artists = iter(artists)
+
+    try:
+        artist = artists.next()
+        while True:
+            try:
+                for y in range(10):
+                    for x in range(3):
+                        message = "<b>%d %s</b><br/>%s<br/>%s" % (
+                            artist.artistid, artist.artistname(), artist.person.name,
+                            ", ".join(
+                                    "%s:%s" % (al.space.shortname, al.allocated) for al in artist.allocation_set.all()))
+                        if artist.mailin:
+                            message += "<br/>Mail-in"
+                        c.saveState ()
+                        c.translate ( (3/16.0 + x * (2+3/4.0)) * inch, (9.5 - y) * inch )
+                        text_into_box(c, message, 0.2, 0.1, 2.475, 0.9, style=piece_sticker_style, escape_text=False,
+                                      fontSize=12)
+                        c.restoreState ()
+                        artist = artists.next()
+            finally:
+                c.showPage ()
+    except StopIteration:
+        pass
+
+    c.save ()
